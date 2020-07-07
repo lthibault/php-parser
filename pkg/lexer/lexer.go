@@ -1,4 +1,4 @@
-// Lexer transforms an input string into a stream of PHP tokens.
+// Package lexer transforms an input string into a stream of PHP tokens.
 package lexer
 
 import (
@@ -8,7 +8,7 @@ import (
 	"unicode"
 	"unicode/utf8"
 
-	"github.com/jxwr/php-parser/token"
+	"github.com/lthibault/php-parser/pkg/token"
 )
 
 // Lexer represents the state of "lexing" items from a source string.
@@ -37,6 +37,7 @@ type lexer struct {
 	file string
 }
 
+// NewLexer .
 func NewLexer(input string) token.Stream {
 	l := &lexer{
 		line:  1,
@@ -179,6 +180,7 @@ func isNonAlphaOperator(s string) bool {
 	return nonalpha.MatchString(s)
 }
 
+// IsKeyword returns true if the token is a keyword
 func IsKeyword(i token.Token, tokenString string) bool {
 	_, ok := keywordMap[i]
 	return ok && !isNonAlphaOperator(tokenString)

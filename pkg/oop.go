@@ -1,9 +1,9 @@
 package parser
 
 import (
-	"github.com/jxwr/php-parser/ast"
-	"github.com/jxwr/php-parser/lexer"
-	"github.com/jxwr/php-parser/token"
+	"github.com/lthibault/php-parser/pkg/ast"
+	"github.com/lthibault/php-parser/pkg/lexer"
+	"github.com/lthibault/php-parser/pkg/token"
 )
 
 func (p *Parser) parseInstantiation() ast.Expression {
@@ -255,5 +255,4 @@ func (p *Parser) parseClassMemberSettings() (vis ast.Visibility, static, final, 
 			return
 		}
 	}
-	return
 }

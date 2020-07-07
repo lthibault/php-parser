@@ -1,11 +1,12 @@
+// Package parser builds an AST from a token stream
 package parser
 
 import (
 	"fmt"
 
-	"github.com/jxwr/php-parser/ast"
-	"github.com/jxwr/php-parser/lexer"
-	"github.com/jxwr/php-parser/token"
+	"github.com/lthibault/php-parser/pkg/ast"
+	"github.com/lthibault/php-parser/pkg/lexer"
+	"github.com/lthibault/php-parser/pkg/token"
 )
 
 // Parser handles scanning through and parsing a PHP source string into an AST. It is configurable
@@ -27,8 +28,8 @@ type Parser struct {
 	instantiation bool
 }
 
-// NewParser readies a parser object for the given input string.
-func NewParser(input string) *Parser {
+// New readies a parser object for the given input string.
+func New(input string) *Parser {
 	p := &Parser{
 		idx:       -1,
 		MaxErrors: 10,
@@ -83,7 +84,7 @@ func (p *Parser) parseNode() ast.Node {
 }
 
 func (p *Parser) next() {
-	p.idx += 1
+	p.idx++
 	if len(p.previous) <= p.idx {
 		p.current = p.lexer.Next()
 		if p.PrintTokens {
@@ -96,7 +97,7 @@ func (p *Parser) next() {
 }
 
 func (p *Parser) backup() {
-	p.idx -= 1
+	p.idx--
 	p.current = p.previous[p.idx]
 }
 
@@ -154,7 +155,7 @@ func (p *Parser) errorf(str string, args ...interface{}) {
 		return
 	}
 	errString := fmt.Sprintf(str, args...)
-	p.errorCount += 1
+	p.errorCount++
 	p.errors = append(p.errors, fmt.Errorf("%s: %s", p.errorPrefix(), errString))
 	p.errorMap[p.current.Begin.Line] = true
 }

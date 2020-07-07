@@ -3,9 +3,9 @@ package parser
 import (
 	"strings"
 
-	"github.com/jxwr/php-parser/ast"
-	"github.com/jxwr/php-parser/lexer"
-	"github.com/jxwr/php-parser/token"
+	"github.com/lthibault/php-parser/pkg/ast"
+	"github.com/lthibault/php-parser/pkg/lexer"
+	"github.com/lthibault/php-parser/pkg/token"
 )
 
 var operatorPrecedence = map[token.Token]int{
@@ -86,11 +86,11 @@ func (p *Parser) parseExpression() (expr ast.Expression) {
 			expr = p.parseUnaryExpressionRight(p.parseNextExpression(), *op)
 			break
 		}
-		p.parenLevel += 1
+		p.parenLevel++
 		p.next()
 		expr = p.parseExpression()
 		p.expect(token.CloseParen)
-		p.parenLevel -= 1
+		p.parenLevel--
 		expr = p.parseOperation(originalParenLev, expr)
 	default:
 		p.errorf("Expected expression. Found %s", p.current)
@@ -149,7 +149,7 @@ func (p *Parser) parseOperation(originalParenLevel int, lhs ast.Expression) (exp
 			p.backup()
 			return lhs
 		}
-		p.parenLevel -= 1
+		p.parenLevel--
 		expr = lhs
 	case subexpressionBeginOperation:
 		// Check if we have a paren directly after a literal
@@ -158,7 +158,7 @@ func (p *Parser) parseOperation(originalParenLevel int, lhs ast.Expression) (exp
 			p.backup()
 			return lhs
 		}
-		p.parenLevel += 1
+		p.parenLevel++
 		expr = p.parseNextExpression()
 	default:
 		p.backup()
@@ -278,7 +278,6 @@ func (p *Parser) parseOperandComponent(lhs ast.Expression) (expr ast.Expression)
 			return
 		}
 	}
-	return
 }
 
 func (p *Parser) parseLiteral() ast.Expression {

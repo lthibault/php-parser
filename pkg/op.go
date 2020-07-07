@@ -1,8 +1,8 @@
 package parser
 
 import (
-	"github.com/jxwr/php-parser/ast"
-	"github.com/jxwr/php-parser/token"
+	"github.com/lthibault/php-parser/pkg/ast"
+	"github.com/lthibault/php-parser/pkg/token"
 )
 
 type operationType int

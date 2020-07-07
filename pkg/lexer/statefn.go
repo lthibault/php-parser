@@ -5,7 +5,7 @@ import (
 	"strings"
 	"unicode"
 
-	"github.com/jxwr/php-parser/token"
+	"github.com/lthibault/php-parser/pkg/token"
 )
 
 // longestToken is length of the longest token string

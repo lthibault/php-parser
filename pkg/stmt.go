@@ -1,8 +1,8 @@
 package parser
 
 import (
-	"github.com/jxwr/php-parser/ast"
-	"github.com/jxwr/php-parser/token"
+	"github.com/lthibault/php-parser/pkg/ast"
+	"github.com/lthibault/php-parser/pkg/token"
 )
 
 func (p *Parser) parseStmt() ast.Statement {
@@ -48,7 +48,7 @@ func (p *Parser) parseStmt() ast.Statement {
 		if p.peek().Typ == token.ScopeResolutionOperator {
 			expr := p.parseExpression()
 			p.expectStmtEnd()
-			stmt := &ast.ExpressionStmt{expr}
+			stmt := &ast.ExpressionStmt{Expression: expr}
 			return stmt
 		}
 		s := &ast.StaticVariableDeclaration{Declarations: make([]ast.Expression, 0)}
@@ -76,7 +76,7 @@ func (p *Parser) parseStmt() ast.Statement {
 		p.expectStmtEnd()
 		return s
 	case token.VariableOperator, token.UnaryOperator:
-		expr := &ast.ExpressionStmt{p.parseExpression()}
+		expr := &ast.ExpressionStmt{Expression: p.parseExpression()}
 		p.expectStmtEnd()
 		return expr
 	case token.Print:
@@ -204,7 +204,7 @@ func (p *Parser) parseStmt() ast.Statement {
 		expr := p.parseExpression()
 		if expr != nil {
 			p.expectStmtEnd()
-			return &ast.ExpressionStmt{expr}
+			return &ast.ExpressionStmt{Expression: expr}
 		}
 		p.errorf("Found %s, statement or expression", p.current)
 		return nil
